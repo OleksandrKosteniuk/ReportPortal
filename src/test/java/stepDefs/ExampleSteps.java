@@ -1,28 +1,29 @@
 package stepDefs;
 
-import io.cucumber.java.BeforeStep;
 import abstractClasses.page.AbstractPage;
 import desktop.fragments.BasketPopUp;
 import desktop.fragments.GlobalHeader;
+import desktop.pages.BasketPage;
 import desktop.pages.CheckoutForGuestPage;
 import desktop.pages.HomePage;
 import desktop.pages.SearchResultPage;
-import desktop.pages.BasketPage;
 import driver.DriverManager;
 import io.cucumber.java.Transpose;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExampleSteps extends AbstractPage {
-
+    
+    final static Logger logger = Logger.getLogger(ExampleSteps.class);
+    
     //Fragments creation
     private GlobalHeader globalHeader = new GlobalHeader();
     private BasketPopUp basketPopUp = new BasketPopUp();
@@ -36,6 +37,7 @@ public class ExampleSteps extends AbstractPage {
     @Given("I am an anonymous customer with clear cookies")
     public void cleanCookiesInTheBrowser() {
         DriverManager.getDriver().manage().deleteAllCookies();
+        logger.error("Guest opens Browser with clear cookies");
     }
     
     @When("I open the Home page")

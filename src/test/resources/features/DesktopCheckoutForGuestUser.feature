@@ -15,7 +15,7 @@ Feature: Desktop Checkout for Guest User
     And I apply the following search filters
       | Currency selector| € EUR          |
       | Price range      | 30 € +         |
-      | Availability     | In Stock (5)   |
+      | Availability     | In Stock (6)   |
       | Language         | English (16)   |
       | Format           | Paperback (21) |
     Then Search results contain only the following products
