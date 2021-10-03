@@ -8,20 +8,23 @@ import desktop.pages.CheckoutForGuestPage;
 import desktop.pages.HomePage;
 import desktop.pages.SearchResultPage;
 import driver.DriverManager;
+import io.cucumber.java.After;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.Transpose;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExampleSteps extends AbstractPage {
-    
+
     final static Logger logger = Logger.getLogger(ExampleSteps.class);
     
     //Fragments creation
@@ -37,7 +40,7 @@ public class ExampleSteps extends AbstractPage {
     @Given("I am an anonymous customer with clear cookies")
     public void cleanCookiesInTheBrowser() {
         DriverManager.getDriver().manage().deleteAllCookies();
-        logger.error("Guest opens Browser with clear cookies");
+        logger.info("Guest opens Browser with clear cookies");
     }
     
     @When("I open the Home page")
@@ -223,4 +226,5 @@ public class ExampleSteps extends AbstractPage {
     public void fillInCardDetailsInThePaymentArea(Map<String,String> creditCardData) {
         checkoutPageForGuest.fillInCardDetailsInThePaymentArea(creditCardData);
     }
+    
 }

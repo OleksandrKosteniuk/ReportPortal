@@ -1,5 +1,6 @@
 package abstractClasses.page;
 
+import abstractClasses.logger.LoggerManager;
 import driver.DriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
