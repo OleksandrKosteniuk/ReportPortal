@@ -8,16 +8,21 @@ import desktop.pages.CheckoutForGuestPage;
 import desktop.pages.HomePage;
 import desktop.pages.SearchResultPage;
 import driver.DriverManager;
+import hooks.ScreenshootHook;
 import io.cucumber.java.After;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.Transpose;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -36,9 +41,22 @@ public class ExampleSteps extends AbstractPage {
     private SearchResultPage searchResultPage = new SearchResultPage();
     private BasketPage basketPage = new BasketPage();
     private CheckoutForGuestPage checkoutPageForGuest = new CheckoutForGuestPage();
-
+    
+    @After
+    public void takeScreenshot (Scenario scenario) throws IOException {
+        Date currentDate = new Date();
+        String screenshotFileName = currentDate.toString().replace(" ", "-").replace(":", "-");
+        File screenshotFile = ((TakesScreenshot) DriverManager.getDriver()).getScreenshotAs(OutputType.FILE);
+        
+        if (scenario.isFailed()){
+            FileUtils.copyFile(screenshotFile,new File(".//screenshot//"+screenshotFileName+".png"));
+            logger.error("The test scenario is failed");
+            logger.info("The Screenshot has been captured");
+        }
+    }
+    
     @Given("I am an anonymous customer with clear cookies")
-    public void cleanCookiesInTheBrowser() {
+    public void cleanCookiesInTheBrowser() throws IOException {
         DriverManager.getDriver().manage().deleteAllCookies();
         logger.info("Guest opens Browser with clear cookies");
     }
@@ -50,8 +68,8 @@ public class ExampleSteps extends AbstractPage {
         assertThat(DriverManager.getDriver().getCurrentUrl().contains(homePage.getPageUrl()))
                 .overridingErrorMessage("Home page is not opened")
                 .isTrue();
-    }
-
+        }
+        
     @When("I search for {string}")
     public void searchByBookTitle(String keywordForSearching) {
         globalHeader.fillInKeywordForSearching(keywordForSearching);
