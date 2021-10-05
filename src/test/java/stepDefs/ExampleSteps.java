@@ -8,16 +8,21 @@ import desktop.pages.CheckoutForGuestPage;
 import desktop.pages.HomePage;
 import desktop.pages.SearchResultPage;
 import driver.DriverManager;
+import hooks.ScreenshootHook;
 import io.cucumber.java.After;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.Transpose;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +41,20 @@ public class ExampleSteps extends AbstractPage {
     private SearchResultPage searchResultPage = new SearchResultPage();
     private BasketPage basketPage = new BasketPage();
     private CheckoutForGuestPage checkoutPageForGuest = new CheckoutForGuestPage();
+    
+  
 
+    @After
+    public void getScreenshot(Scenario scenario) throws IOException{
+        Date currentDate = new Date();
+        String screenshotFileName = currentDate.toString().replace(" ", "-").replace(":", "-");
+        File screenshotFile = ((TakesScreenshot) DriverManager.getDriver()).getScreenshotAs(OutputType.FILE);
+
+        if (scenario.isFailed()){
+            FileUtils.copyFile(screenshotFile,new File(".//screenshot//"+screenshotFileName+".png"));
+        }
+    }
+    
     @Given("I am an anonymous customer with clear cookies")
     public void cleanCookiesInTheBrowser() {
         DriverManager.getDriver().manage().deleteAllCookies();
